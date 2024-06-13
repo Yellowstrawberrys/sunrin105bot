@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.yellowstrawberry'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'me.yellowstrawberry:OpenNeisAPI4J:0.0.2'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
