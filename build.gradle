@@ -6,11 +6,12 @@ group = 'net.yellowstrawberry'
 version = '1.0-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    implementation 'me.yellowstrawberry:OpenNeisAPI4J:0.0.2'
+    implementation 'me.yellowstrawberry:OpenNeisAPI4J:0.0.3'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
