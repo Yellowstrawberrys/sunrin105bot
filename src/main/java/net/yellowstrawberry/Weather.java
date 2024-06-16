@@ -65,8 +65,8 @@ public class Weather {
         String sd = DATE_FORMAT.format(date);
         for(Object o1 : requestWeather(sd)) {
             JSONObject o2 = (JSONObject) o1;
-            if(!o2.getString("baseTime").equals("0800") || !o2.getString("fcstDate").equals(sd)) continue;
-            if(ftToInt(o2.getString("fcstTime")) < 800) continue;
+            if(!o2.getString("baseTime").equals("0500") || !o2.getString("fcstDate").equals(sd)) continue;
+            if(ftToInt(o2.getString("fcstTime")) < 500) continue;
             switch (o2.getString("category")) {
                 case "POP" -> {
                     // 강수 확률
@@ -83,7 +83,6 @@ public class Weather {
                     // 습도
                     hum += Integer.parseInt(o2.getString("fcstValue"));
 //                    System.out.println("습도: "+o2.getString("fcstValue")+" @ "+o2.getString("fcstTime"));
-                    size++;
                 }
                 case "WSD" -> {
                     // 풍속
@@ -97,6 +96,7 @@ public class Weather {
                 }
                 case "TMP" -> {
                     // tmp
+                    size++;
                     int tmp = Integer.parseInt(o2.getString("fcstValue"));
                     if(tmp > max) max = tmp;
                     if(tmp < min) min = tmp;
@@ -116,6 +116,7 @@ public class Weather {
                 .get()
                 .build()).execute()) {
             JSONObject o = new JSONObject(r.body().string());
+            if(!o.has("body")) System.out.println(o);
             return o.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
         } catch (IOException e) {
             throw new RuntimeException(e);

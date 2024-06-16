@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class SQLCommunicator {
 
-    public static SQLCommunicator INSTANCE = new SQLCommunicator("localhost", "user", "pass", "class119105");
+    public static SQLCommunicator INSTANCE = new SQLCommunicator("127.0.0.1", "user", "pass", "class119105");
 
     private Connection connection;
     private final String host;

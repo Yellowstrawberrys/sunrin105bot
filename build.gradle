@@ -1,9 +1,12 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'net.yellowstrawberry'
 version = '1.0-SNAPSHOT'
+mainClassName = 'net.yellowstrawberry.Main'
 
 repositories {
     mavenLocal()
@@ -15,10 +18,38 @@ dependencies {
     implementation 'org.json:json:+'
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("net.dv8tion:JDA:5.0.0-beta.24")
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.4.0'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+                'Main-Class': 'net.yellowstrawberry.Main'
+        )
+    }
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources"
+        }
+    }
+}
+
 test {
     useJUnitPlatform()
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }

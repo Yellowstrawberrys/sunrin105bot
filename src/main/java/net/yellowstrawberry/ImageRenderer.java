@@ -62,11 +62,10 @@ public class ImageRenderer {
     };
 
     private static final Font[] fonts = {
-            // TODO: Regular, Medium, SemiBold, ExtraBold
-            loadFont(new File(ImageRenderer.class.getResource("/fonts/WantedSans-Regular.ttf").getFile())),
-            loadFont(new File(ImageRenderer.class.getResource("/fonts/WantedSans-Medium.ttf").getFile())),
-            loadFont(new File(ImageRenderer.class.getResource("/fonts/WantedSans-SemiBold.ttf").getFile())),
-            loadFont(new File(ImageRenderer.class.getResource("/fonts/WantedSans-ExtraBold.ttf").getFile()))
+            loadFont(new File("./fonts/WantedSans-Regular.ttf")),
+            loadFont(new File("./fonts/WantedSans-Medium.ttf")),
+            loadFont(new File("./fonts/WantedSans-SemiBold.ttf")),
+            loadFont(new File("./fonts/WantedSans-ExtraBold.ttf")),
     };
 
     private static final Color[] colors = {
@@ -101,6 +100,8 @@ public class ImageRenderer {
         Weather.WeatherInformation info = Weather.getWeatherInformation(date);
         BufferedImage image = loadBackground(info.type());
         Graphics2D g = image.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         drawHeader(g, date);
         drawWeather(g, info);

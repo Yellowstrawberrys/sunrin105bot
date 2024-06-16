@@ -31,7 +31,7 @@ public class TimeTable {
                 r[i][0] = (i+1)+"교시";
                 r[i][1] = o.getString("subject");
                 r[i][2] = "|";
-                r[i][3] = d[i].isBlank() ? "(전달사항 없음)" : d[i];
+                r[i][3] = d[i] == null || d[i].isBlank() ? "(전달사항 없음)" : d[i];
             }
 
             return r;

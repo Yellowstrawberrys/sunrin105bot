@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -55,6 +58,7 @@ public class Main extends ListenerAdapter {
                                         .addOption(OptionType.STRING, "date", "날짜 (2024/09/30 형식)", true)
                         ),
                 Commands.slash("test", "테스트")
+                        .addOption(OptionType.STRING, "date", "날짜")
         ).queue();
         try {
             apiKey = System.getProperty("cloud");
@@ -146,7 +150,16 @@ public class Main extends ListenerAdapter {
                 event.reply("배드배드;; 날짜 형태 확인 바람").setEphemeral(true).queue();
             }
         }else if(event.getName().equals("test")) {
-            InputStream[] streams = ImageToStream(ImageRenderer.render(new Date()));
+            Date d;
+            if(event.getOption("date")!=null) {
+                try {
+                    d = new SimpleDateFormat("yyyy/MM/dd").parse(event.getOption("date").getAsString());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else d = new Date();
+            InputStream[] streams = ImageToStream(ImageRenderer.render(d));
             event.getJDA().getGuildById(1225011335352418325L).getTextChannelById(1229076484086431854L).sendFiles(FileUpload.fromData(
                     streams[0], "0.png"
             )).queue(s -> s.getJDA().getGuildById(1225011335352418325L).getTextChannelById(1229076484086431854L).sendFiles(FileUpload.fromData(
