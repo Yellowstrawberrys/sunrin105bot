@@ -67,7 +67,6 @@ public class Weather {
             JSONObject o2 = (JSONObject) o1;
             if(!o2.getString("baseTime").equals("0800") || !o2.getString("fcstDate").equals(sd)) continue;
             if(ftToInt(o2.getString("fcstTime")) < 800) continue;
-            size++;
             switch (o2.getString("category")) {
                 case "POP" -> {
                     // 강수 확률
@@ -84,6 +83,7 @@ public class Weather {
                     // 습도
                     hum += Integer.parseInt(o2.getString("fcstValue"));
 //                    System.out.println("습도: "+o2.getString("fcstValue")+" @ "+o2.getString("fcstTime"));
+                    size++;
                 }
                 case "WSD" -> {
                     // 풍속

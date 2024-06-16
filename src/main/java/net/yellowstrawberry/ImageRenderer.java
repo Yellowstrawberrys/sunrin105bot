@@ -1,5 +1,6 @@
 package net.yellowstrawberry;
 
+import me.yellowstrawberry.openneisapi.exception.NeisException;
 import me.yellowstrawberry.openneisapi.objects.food.Food;
 
 import javax.imageio.ImageIO;
@@ -106,7 +107,6 @@ public class ImageRenderer {
         drawTimetable(g, date);
         drawMeal(g, date);
         drawWarning(g, date);
-        System.out.println(info);
 
         return new BufferedImage[]{
                 image.getSubimage(0, 0, 634, 364),
@@ -126,7 +126,7 @@ public class ImageRenderer {
         int off = 0;
         for(String a : getWeatherMessage().split("\n")) {
             g.drawString(a, 45, offsets[1]+off+g.getFontMetrics().getAscent());
-            off += g.getFontMetrics().getAscent();
+            off += g.getFontMetrics().getAscent()+g.getFontMetrics().getDescent();
         }
     }
 
@@ -147,6 +147,7 @@ public class ImageRenderer {
     private static void drawTimetable(Graphics2D g, Date date) {
         String[][] table = TimeTable.getPeriod(date);
         for (int i=0; i<table.length; i++) {
+            if(table[i][0] == null) return;
             int offset = offsets[3]*i;
             for (int j=0; j<4; j++) {
                 g.setColor(colors[j%2==1?0:2]);
@@ -162,11 +163,12 @@ public class ImageRenderer {
             g.setColor(colors[0]);
             g.setFont(fonts[1].deriveFont(sizes[6]));
             for(Food food : ona.getMealOfDay(school, date).getFood()) {
-                g.drawString(food.getName(), offsets[9], offsets[8]+offset+g.getFontMetrics().getAscent());
-                offset += g.getFontMetrics().getHeight();
+                g.drawString(food.getName(), offsets[9], offsets[8]+offset);
+                offset += g.getFontMetrics().getHeight()+g.getFontMetrics().getLeading();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | NeisException e) {
+            g.drawString("데이터 없음", offsets[9], offsets[8]+g.getFontMetrics().getLeading());
+            e.printStackTrace();
         }
     }
 
@@ -175,14 +177,14 @@ public class ImageRenderer {
         g.setColor(colors[0]);
         g.setFont(fonts[1].deriveFont(sizes[6]));
         for(String s : getWarnings(date)) {
-            g.drawString(s, offsets[10], offsets[8]+offset+g.getFontMetrics().getAscent());
-            offset += g.getFontMetrics().getHeight();
+            g.drawString(s, offsets[10], offsets[8]+offset);
+            offset += g.getFontMetrics().getHeight()+g.getFontMetrics().getLeading();
         }
     }
 
     private static String[] getWarnings(Date date) {
         // TODO: DB에서 데이터 쌔벼오기
-        return new String[]{"나는 문어, 꿈을 꾸는 무너 ^^"};
+        return new String[]{"나는 문어, 꿈을 꾸는 무너 ^^", "SEX"};
     }
 
     private static String getWeatherMessage() {

@@ -21,10 +21,11 @@ public class TimeTable {
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             JSONArray a = new JSONObject(res.body().string()).getJSONArray("data").getJSONArray(c.get(Calendar.DAY_OF_WEEK));
-            String[][] r = new String[4][a.length()];
+            String[][] r = new String[a.length()][4];
 
             for(int i =0; i<a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
+                if(o.getString("subject").isBlank()) continue;
                 r[i][0] = (i+1)+"교시";
                 r[i][1] = o.getString("subject");
                 r[i][2] = "|";
