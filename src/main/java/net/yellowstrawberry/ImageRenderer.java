@@ -10,9 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.List;
 
 import static net.yellowstrawberry.Main.ona;
 import static net.yellowstrawberry.Main.school;
@@ -20,6 +19,7 @@ import static net.yellowstrawberry.Main.school;
 public class ImageRenderer {
 
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MM월 dd일 (E)", Locale.KOREAN);
+    protected static final DateFormat DA = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final int[] offsets = {
             154, // 요일 위쪽 0
@@ -183,14 +183,17 @@ public class ImageRenderer {
     }
 
     private static String[] getWarnings(Date date) {
-        // TODO: DB에서 데이터 쌔벼오기
-        return new String[]{"나는 문어, 꿈을 꾸는 무너 ^^", "SEX"};
+        List<String> warnings = new ArrayList<>();
+        List<String> l = Main.getWarningData(DA.format(date));
+        for(String s : l) {
+            warnings.addAll(Arrays.asList(s.split("\n")));
+        }
+        return warnings.toArray(new String[0]);
     }
 
     private static String getWeatherMessage() {
-        // TODO: 기상청에서 데이터 쌔벼오기
-        return "햇빛이 짱짱한 날이에요. 그냥 가서\n" +
-                "skrr이나 쳐 하세요;;";
+        return "여기다가 뭔 멘트를 넣을지\n" +
+                "모르겠으니 skrr이나 쳐 하세요;;";
     }
 
     private static int getCenterOffset(int l, int x) {

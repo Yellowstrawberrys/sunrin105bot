@@ -111,7 +111,7 @@ public class Weather {
     public static JSONArray requestWeather(String date) {
         Request.Builder requestBuilder = new Request.Builder();
         try (Response r = client.newCall(requestBuilder.url("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?" +
-                        "ServiceKey=%s&base_date=%s&base_time=%s".formatted(URLEncoder.encode(apiKey, StandardCharsets.UTF_8), date, "0800") +
+                        "ServiceKey=%s&base_date=%s&base_time=%s".formatted(URLEncoder.encode(apiKey, StandardCharsets.UTF_8), date, "0500") +
                         "&pageNo=1&numOfRows=2000&dataType=JSON&nx=60&ny=126")
                 .get()
                 .build()).execute()) {

@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import static net.yellowstrawberry.ImageRenderer.DA;
+
 public class TimeTable {
     public static String[][] getPeriod(Date date) {
-        //TODO: 컴시간 알리미 parser 쓰기
         try(Response res = Weather.client.newCall(
                 new Request.Builder()
                         .url("http://localhost:4000")
@@ -22,6 +23,7 @@ public class TimeTable {
             c.setTime(date);
             JSONArray a = new JSONObject(res.body().string()).getJSONArray("data").getJSONArray(c.get(Calendar.DAY_OF_WEEK));
             String[][] r = new String[a.length()][4];
+            String[] d = Main.getClassData(DA.format(date));
 
             for(int i =0; i<a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
@@ -29,7 +31,7 @@ public class TimeTable {
                 r[i][0] = (i+1)+"교시";
                 r[i][1] = o.getString("subject");
                 r[i][2] = "|";
-                r[i][3] = "제공예정";
+                r[i][3] = d[i].isBlank() ? "(전달사항 없음)" : d[i];
             }
 
             return r;
