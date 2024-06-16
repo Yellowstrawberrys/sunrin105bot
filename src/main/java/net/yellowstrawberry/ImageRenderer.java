@@ -88,27 +88,25 @@ public class ImageRenderer {
     }
 
 
-    private static BufferedImage loadBackground() {
-        // TODO;
+    private static BufferedImage loadBackground(Weather.WeatherType weatherType) {
         try {
-            return ImageIO.read(ImageRenderer.class.getResourceAsStream("/bg/TemplateGood.png"));
+            return ImageIO.read(ImageRenderer.class.getResourceAsStream("/bg/%s.png".formatted(weatherType.name())));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static BufferedImage[] render() {
-        BufferedImage image = loadBackground();
+    public static BufferedImage[] render(Date date) {
+        Weather.WeatherInformation info = Weather.getWeatherInformation(date);
+        BufferedImage image = loadBackground(info.type());
         Graphics2D g = image.createGraphics();
 
-        Date date = new Date();
-
-
         drawHeader(g, date);
-        drawWeather(g, date);
-        drawTimetable(g);
+        drawWeather(g, info);
+        drawTimetable(g, date);
         drawMeal(g, date);
         drawWarning(g, date);
+        System.out.println(info);
 
         return new BufferedImage[]{
                 image.getSubimage(0, 0, 634, 364),
@@ -132,8 +130,7 @@ public class ImageRenderer {
         }
     }
 
-    private static void drawWeather(Graphics2D g, Date date) {
-        Weather.WeatherInformation info = Weather.getWeatherInformation(date);
+    private static void drawWeather(Graphics2D g, Weather.WeatherInformation info) {
         g.setFont(fonts[0].deriveFont(sizes[7]));
         g.setColor(colors[0]);
         g.drawString("%d° / %d°".formatted(info.max(), info.min()), offsets[13], offsets[12]+g.getFontMetrics().getAscent());
@@ -143,12 +140,12 @@ public class ImageRenderer {
 
         g.drawString(info.uv().kr(), offsets[15], offsets[14]+g.getFontMetrics().getAscent());
         g.drawString("%d%%".formatted(info.humidity()), offsets[15], offsets[14]+sizes[9]+g.getFontMetrics().getAscent());
-        g.drawString("%d%%µg/m³ | %d%%µg/m³".formatted(info.dust(), info.udust()), offsets[15], offsets[14]+sizes[9]*2+g.getFontMetrics().getAscent());
+        g.drawString("지원예정", offsets[15], offsets[14]+sizes[9]*2+g.getFontMetrics().getAscent());
     }
 
 
-    private static void drawTimetable(Graphics2D g) {
-        String[][] table = TimeTable.getPeriod();
+    private static void drawTimetable(Graphics2D g, Date date) {
+        String[][] table = TimeTable.getPeriod(date);
         for (int i=0; i<table.length; i++) {
             int offset = offsets[3]*i;
             for (int j=0; j<4; j++) {
