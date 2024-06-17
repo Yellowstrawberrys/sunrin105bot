@@ -21,7 +21,7 @@ public class TimeTable {
         ).execute()) {
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            JSONArray a = new JSONObject(res.body().string()).getJSONArray("data").getJSONArray(c.get(Calendar.DAY_OF_WEEK));
+            JSONArray a = new JSONObject(res.body().string()).getJSONArray("data").getJSONArray(c.get(Calendar.DAY_OF_WEEK)-2);
             String[][] r = new String[a.length()][4];
             String[] d = Main.getClassData(DA.format(date));
 
