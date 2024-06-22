@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'me.yellowstrawberry:OpenNeisAPI4J:0.0.3'
+    implementation 'me.yellowstrawberry:OpenNeisAPI4J:0.0.4'
     implementation 'org.json:json:+'
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("net.dv8tion:JDA:5.0.0-beta.24")
